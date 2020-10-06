@@ -1,0 +1,17 @@
+{{ book.title }} {{ book.autor }} {{ book.description }}
+<br>
+
+<img src="{{ book.cover.url  }}"/>
+<br>
+{% for category in book.category.all %}
+{{ category }}
+{% endfor %}
+<br>
+{{ book.description }}
+
+
+<br>
+
+{% for book_to_rent in books_instance %}
+<li>{{ book_to_rent.book }},{{ book_to_rent.imprint }}, {{ book_to_rent.due_back }} {{ book_to_rent.status }}</li>
+{% endfor %}
