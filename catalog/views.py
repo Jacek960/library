@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.db.models import Q
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.views import View
@@ -29,3 +30,16 @@ class BookDetailsView(View):
         book = Book.objects.get(id=id)
         books_instance=BookInstance.objects.filter(book__id=id)
         return render(request,'catalog/book_details.html',{'book':book,'books_instance':books_instance})
+
+class SearchView(View):
+    def get(self, request):
+        books = None
+        query = None
+        if 'q' in request.GET:
+            query = request.GET.get('q')
+            if query == '':
+                return redirect('/search/?q=""')
+            else:
+                books = Book.objects.all().filter(
+                    Q(title__icontains=query) | Q(autor__name__icontains=query))
+            return render(request, 'catalog/search.html', {'query': query, 'books': books})

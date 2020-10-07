@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <p>The searched phrase is: "{{ query }}"</p>
+        <div class="row row-cols-1 row-cols-md-5">
+            {% for book in books %}
+                {{ book.title }}
+            {% empty %}
+                <p>0 results found</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
