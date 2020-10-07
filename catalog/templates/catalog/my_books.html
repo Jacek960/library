@@ -1,0 +1,18 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+{% for book in book_instance_borrower  %}
+    <h3>Title: {{ book.book }}</h3>
+    <p>Due back: {{ book.due_back }}</p>
+    {% if book.status == "o" %}
+    <p>on loan</p>
+    {% elif book.status == "r" %}
+    <p>reservation </p>
+    {% endif %}
+
+{% endfor %}
+
+{% endblock %}

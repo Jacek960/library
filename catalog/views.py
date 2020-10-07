@@ -65,3 +65,8 @@ class SearchView(View):
                 books = Book.objects.all().filter(
                     Q(title__icontains=query) | Q(autor__name__icontains=query))
         return render(request, 'catalog/search.html', {'query': query, 'books': books})
+
+class MyBooksView(View):
+    def get(self,request):
+        book_instance_borrower = BookInstance.objects.filter(borrower=request.user)
+        return render(request, 'catalog/my_books.html',{'book_instance_borrower':book_instance_borrower})
