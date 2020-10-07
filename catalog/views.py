@@ -27,5 +27,5 @@ class BookListView(View):
 class BookDetailsView(View):
     def get(self,request,id):
         book = Book.objects.get(id=id)
-        books_instance=BookInstance.objects.filter(book__title=book)
+        books_instance=BookInstance.objects.filter(book__id=id)
         return render(request,'catalog/book_details.html',{'book':book,'books_instance':books_instance})

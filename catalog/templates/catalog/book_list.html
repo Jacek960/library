@@ -1,5 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
 {% for book in all_books %}
 
-    {{ book.title }}, {{ book.autor }},
+    <li>{{ book.title }}, {{ book.autor }},</li>
 
 {% endfor %}
+
+{% endblock content %}
