@@ -1,0 +1,26 @@
+
+{% extends 'base.html' %}
+{% block title %}Logownie- E-courses4U {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <style>
+        .textinput {
+            width: 450px;
+        }
+    </style>
+    <h4>Book reservation </h4>
+    {% for book in book_instance_reservation %}
+        {{ book.book }}
+        {{ book.id }}
+{% endfor %}
+
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        <button class="btn btn-success" type="submit">Reserve</button>
+    </form>
+
+{% endblock content %}
+
+
+

@@ -36,6 +36,23 @@ class BookDetailsView(View):
                                                            'num_instances_available':num_instances_available,
                                                            'books_instance_all':books_instance_all})
 
+class BookReservations(View):
+    def get(self,request,id):
+        book_instance_reservation = BookInstance.objects.filter(id=id)
+        for i in book_instance_reservation:
+            if i.status != 'a':
+                return redirect('/')
+            else:
+                return render(request, 'catalog/book_reservation.html', {'book_instance_reservation':book_instance_reservation})
+    def post(self,request,id):
+        update_book = BookInstance.objects.filter(id=id)
+        for i in update_book:
+            i.status = 'r'
+            i.borrower = request.user
+            i.save()
+        return redirect('/')
+
+
 class SearchView(View):
     def get(self, request):
         books = None
