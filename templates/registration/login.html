@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Logownie- E-courses4U {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <style>
+        .textinput {
+            width: 450px;
+        }
+    </style>
+    <h2>Log in</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <br>
+        <button class="btn btn-success" type="submit">Log in</button>
+    </form>
+    <br>
+    <p>Do not you remember the password?<a href="/accounts/password_reset/"> recover password</a></p>
+    <br>
+{% endblock content %}

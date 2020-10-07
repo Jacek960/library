@@ -29,7 +29,12 @@ class BookDetailsView(View):
     def get(self,request,id):
         book = Book.objects.get(id=id)
         books_instance=BookInstance.objects.filter(book__id=id)
-        return render(request,'catalog/book_details.html',{'book':book,'books_instance':books_instance})
+        num_instances_available = BookInstance.objects.filter(book__id=id,status__exact='a').count()
+        books_instance_all = BookInstance.objects.filter(book__id=id).count()
+        return render(request,'catalog/book_details.html',{'book':book,
+                                                           'books_instance':books_instance,
+                                                           'num_instances_available':num_instances_available,
+                                                           'books_instance_all':books_instance_all})
 
 class SearchView(View):
     def get(self, request):
@@ -42,4 +47,4 @@ class SearchView(View):
             else:
                 books = Book.objects.all().filter(
                     Q(title__icontains=query) | Q(autor__name__icontains=query))
-            return render(request, 'catalog/search.html', {'query': query, 'books': books})
+        return render(request, 'catalog/search.html', {'query': query, 'books': books})
