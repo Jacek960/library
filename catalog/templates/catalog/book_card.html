@@ -1,0 +1,17 @@
+<div class="col mb-4">
+    <div class="card h-100">
+        <a href="{% url 'book_details' book.id %} ">
+            <img src="{{ book.cover.url }}" class="card-img-top" alt="..."
+
+                 style="width: 157px;height:250px;display: block;margin: 0 auto;padding-top: 15px;"></a>
+        <div class="card-body">
+            <ul style="list-style-type:none;padding: 0;">
+                <li style="text-align: center"><a
+                        href="{% url 'book_details' book.id %} ">{{ book.title }}</a></li>
+                <li style="text-align: center"><a style="color: black;"
+                                                  href="">{{ book.autor }}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

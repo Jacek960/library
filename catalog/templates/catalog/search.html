@@ -4,7 +4,7 @@
         <p>The searched phrase is: "{{ query }}"</p>
         <div class="row row-cols-1 row-cols-md-5">
             {% for book in books %}
-                {{ book.title }}
+                {% include "catalog/book_card.html" %}
             {% empty %}
                 <p>0 results found</p>
             {% endfor %}
