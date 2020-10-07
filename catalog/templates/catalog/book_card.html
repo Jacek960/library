@@ -9,7 +9,7 @@
                 <li style="text-align: center"><a
                         href="{% url 'book_details' book.id %} ">{{ book.title }}</a></li>
                 <li style="text-align: center"><a style="color: black;"
-                                                  href="">{{ book.autor }}</a>
+                                                  href="{% url 'author' book.autor.slug %}">{{ book.autor }}</a>
                 </li>
             </ul>
         </div>

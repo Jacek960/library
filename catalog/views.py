@@ -1,8 +1,10 @@
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.views import View
+from django.views.generic import ListView
 
 from catalog.models import Book, BookInstance, Autor
 
@@ -70,3 +72,15 @@ class MyBooksView(View):
     def get(self,request):
         book_instance_borrower = BookInstance.objects.filter(borrower=request.user)
         return render(request, 'catalog/my_books.html',{'book_instance_borrower':book_instance_borrower})
+
+class AuthorBooksView(View):
+    def get(self, request, autor_slug=None):
+        autor_books = Book.objects.all()
+        if autor_slug:
+            autor = Autor.objects.get(slug=autor_slug)
+            autor_books = autor_books.filter(autor=autor)
+            paginator = Paginator(autor_books, 5)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+        return render(request, 'catalog/author.html',
+                      {'autor_books': autor_books, 'autor': autor, 'page_obj': page_obj})

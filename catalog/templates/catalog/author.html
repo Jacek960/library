@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Author: {{ autor.name }} </h3>
+<div class="row row-cols-1 row-cols-md-5">
+{% for book in autor_books %}
+
+{% include "catalog/book_card.html" %}
+
+{% endfor %}
+</div>
+{% endblock content %}
