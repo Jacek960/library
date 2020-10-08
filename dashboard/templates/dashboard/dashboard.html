@@ -2,5 +2,37 @@
 
 {% block content %}
 <h3>dashboard </h3>
+      <ul>
+    <li><strong>Books:</strong> {{ num_books }}</li>
+    <li><strong>Copies:</strong> {{ num_instances }}</li>
+    <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
+    <li><strong>Authors:</strong> {{ num_autors }}</li>
+  </ul>
 
+    <h3>Users</h3>
+    <ul>
+    {% for user in active_users %}
+        <li>{{ user }} {{ user.last_login }}</li>
+    {% endfor %}
+    </ul>
+
+        <h3>Book reservations</h3>
+    <ul>
+    {% for book in instances_reserved %}
+        <li>{{ book.book }} - {{ book.borrower }} id {{ book.borrower_id }} book id :{{ book.id}}</li>
+    {% endfor %}
+    </ul>
+
+            <h3>Book on loan</h3>
+    <ul>
+    {% for book in instances_on_loan %}
+        <li>id {{ book.borrower_id }} - {{ book.borrower }} - {{ book.book }}   book id :{{ book.id}} due back date: {{ book.due_back }}
+                    {% if book.due_back >= today_date %}
+                due back: <span style="color: green">{{ book.due_back|timeuntil:today_date }}</span>
+            {% else %}
+                over due: <span style="color: red">{{ today_date|timeuntil:book.due_back }}</span>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
 {% endblock content %}

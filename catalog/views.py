@@ -1,3 +1,6 @@
+from datetime import date
+
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect
@@ -7,6 +10,8 @@ from django.views import View
 from django.views.generic import ListView
 
 from catalog.models import Book, BookInstance, Autor
+
+
 
 
 class HomePageView(View):
@@ -71,7 +76,9 @@ class SearchView(View):
 class MyBooksView(View):
     def get(self,request):
         book_instance_borrower = BookInstance.objects.filter(borrower=request.user)
-        return render(request, 'catalog/my_books.html',{'book_instance_borrower':book_instance_borrower})
+        today_date = date.today()
+        return render(request, 'catalog/my_books.html',{'book_instance_borrower':book_instance_borrower,
+                                                        'today_date':today_date})
 
 class AuthorBooksView(View):
     def get(self, request, autor_slug=None):
