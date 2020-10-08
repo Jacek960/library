@@ -6,7 +6,7 @@
 
 <img src="{{ book.cover.url  }}"/>
 
-  <p><strong>Author:</strong> <a href="">{{ book.autor }}</a></p> <!-- author detail link not yet defined -->
+  <p><strong>Author:</strong> <a href="{% url 'author' book.autor.slug %}">{{ book.autor }}</a></p> <!-- author detail link not yet defined -->
   <p><strong>Summary:</strong> {{ book.description }}</p>
   <p><strong>Genre:</strong> {{ book.category.all|join:", " }}</p>
 
