@@ -5,8 +5,7 @@ from django.shortcuts import render, redirect
 
 from django.views.generic.base import View
 
-from catalog.models import Book, BookInstance, Autor
-
+from catalog.models import Book, BookInstance, Autor, BookHistoryRenting
 
 
 class DashboardView(View):
@@ -79,6 +78,12 @@ class BookReturnView(View):
             i.borrower = None
             i.save()
         return redirect('/dashboard/')
+
+class HistoryView(View):
+    def get(self,request,book_instance):
+        books = BookInstance.objects.filter(id=book_instance)
+        book_history = BookHistoryRenting.objects.filter(book_instance=book_instance)
+        return render(request, 'dashboard/book_history.html', {'book_history': book_history,'books':books})
 
 
 

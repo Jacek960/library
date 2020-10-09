@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% for hbook in books %}
+{{ hbook.book.title }}
+   <img src="{{ hbook.book.cover.url }}" >
+{% endfor %}
+<br>
+{% for book in book_history  %}
+{{ book.borrower }}
+    {{ book.book_instance }}
+    {{ book.time_stamp }}
+    {{ book.status }}
+{% endfor %}
+
+{% endblock %}

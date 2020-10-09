@@ -9,9 +9,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView
 
-from catalog.models import Book, BookInstance, Autor
-
-
+from catalog.models import Book, BookInstance, Autor, BookHistoryRenting
 
 
 class HomePageView(View):
@@ -59,6 +57,15 @@ class BookReservations(View):
             i.reservation_time = today_date
             i.borrower = request.user
             i.save()
+            book_history = BookHistoryRenting()
+            book_history.book_instance = i.id
+            book_history.borrower = i.borrower
+            book_history.status = 'r'
+            book_history.time_stamp = today_date
+            book_history.save()
+
+
+
         return redirect('/')
 
 

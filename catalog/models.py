@@ -77,3 +77,20 @@ class BookInstance(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.id} ({self.book.title})'
+
+
+class BookHistoryRenting(models.Model):
+    book_instance = models.CharField(max_length=36,null=True, blank=True)
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    time_stamp = models.DateField(null=True, blank=True)
+
+    LOAN_STATUS = (
+        ('o', 'On loan'),
+        ('a', 'Available'),
+        ('r', 'Reserved'),
+    )
+    status = models.CharField(max_length=1,choices=LOAN_STATUS,blank=True)
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return f'{self.id} ({self.status} {self.borrower}) {self.book_instance}'
