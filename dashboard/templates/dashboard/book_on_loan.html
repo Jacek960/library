@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+{% for book in book_on_loan %}
+
+        <li>id {{ book.borrower_id }} - {{ book.borrower }} - {{ book.book }}   book id :{{ book.id}} due back date: {{ book.due_back }}
+                    {% if book.due_back >= today_date %}
+                due back: <span style="color: green">{{ book.due_back|timeuntil:today_date }}</span>
+            {% else %}
+                over due: <span style="color: red">{{ today_date|timeuntil:book.due_back }}</span>
+            {% endif %}
+        <p>Return <small><a href="{% url 'book_return' book.id %}">return</a></small></p>
+        </li>
+
+
+{% endfor %}
+
+{% endblock content %}

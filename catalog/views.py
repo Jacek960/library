@@ -53,8 +53,10 @@ class BookReservations(View):
                 return render(request, 'catalog/book_reservation.html', {'book_instance_reservation':book_instance_reservation})
     def post(self,request,id):
         update_book = BookInstance.objects.filter(id=id)
+        today_date = date.today()
         for i in update_book:
             i.status = 'r'
+            i.reservation_time = today_date
             i.borrower = request.user
             i.save()
         return redirect('/')

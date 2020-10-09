@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+{% for book in book_reserved %}
+
+    <li>{{ book.book }} - {{ book.borrower }} id {{ book.borrower_id }} book id :{{ book.id}} {{ book.reservation_time }}</li>
+<p>Rent <small><a href="{% url 'book_rent' book.id %}">rent</a></small></p>
+{% endfor %}
+
+{% endblock content %}
+
+
+book_rent

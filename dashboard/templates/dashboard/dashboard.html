@@ -16,14 +16,14 @@
     {% endfor %}
     </ul>
 
-        <h3>Book reservations</h3>
+        <h3>Book reservations <small><a href="{% url 'book_on_reservtion' %}">All</a></small></h3>
     <ul>
     {% for book in instances_reserved %}
-        <li>{{ book.book }} - {{ book.borrower }} id {{ book.borrower_id }} book id :{{ book.id}}</li>
+        <li>{{ book.book }} - {{ book.borrower }} id {{ book.borrower_id }} book id :{{ book.id}} {{ book.reservation_time }}</li>
     {% endfor %}
     </ul>
 
-            <h3>Book on loan</h3>
+            <h3>Book on loan <small><a href="{% url 'book_on_loan' %}">All</a></small></h3>
     <ul>
     {% for book in instances_on_loan %}
         <li>id {{ book.borrower_id }} - {{ book.borrower }} - {{ book.book }}   book id :{{ book.id}} due back date: {{ book.due_back }}

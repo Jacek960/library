@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        .textinput {
+            width: 450px;
+        }
+    </style>
+    <h4>Book rent + 14 days </h4>
+    {% for book in book_instance_rent %}
+        {{ book.book }}
+        {{ book.id }}
+        {{ book.borrower }}
+        {{ book.reservation_time }}
+{% endfor %}
+
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        <button class="btn btn-success" type="submit">Rent a book</button>
+    </form>
+
+{% endblock content %}
