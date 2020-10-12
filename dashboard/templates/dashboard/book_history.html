@@ -7,10 +7,10 @@
 {% endfor %}
 <br>
 {% for book in book_history  %}
-{{ book.borrower }}
+<li>{{ book.borrower }}
     {{ book.book_instance }}
     {{ book.time_stamp }}
-    {{ book.status }}
+    {{ book.status }}</li>
 {% endfor %}
 
 {% endblock %}

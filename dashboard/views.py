@@ -64,19 +64,32 @@ class BookRentView(View):
             i.reservation_time = None
             i.due_back = today_date + timedelta(days=14)
             i.save()
+            book_history = BookHistoryRenting()
+            book_history.book_instance = i.id
+            book_history.borrower = i.borrower
+            book_history.status = 'o'
+            book_history.time_stamp = today_date
+            book_history.save()
         return redirect('/dashboard/')
 
 class BookReturnView(View):
     def get(self,request,id):
         book_instance_rent = BookInstance.objects.filter(id=id)
-        return render(request, 'dashboard/book_rent.html', {'book_instance_rent':book_instance_rent})
+        return render(request, 'dashboard/book_return.html', {'book_instance_rent':book_instance_rent})
     def post(self,request,id):
         update_book = BookInstance.objects.filter(id=id)
+        today_date = date.today()
         for i in update_book:
             i.status = 'a'
             i.due_back = None
             i.borrower = None
             i.save()
+            book_history = BookHistoryRenting()
+            book_history.book_instance = i.id
+            book_history.borrower = None
+            book_history.status = 'a'
+            book_history.time_stamp = today_date
+            book_history.save()
         return redirect('/dashboard/')
 
 class HistoryView(View):
