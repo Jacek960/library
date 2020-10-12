@@ -100,3 +100,8 @@ class AuthorBooksView(View):
             page_obj = paginator.get_page(page_number)
         return render(request, 'catalog/author.html',
                       {'autor_books': autor_books, 'autor': autor, 'page_obj': page_obj})
+
+class UserBookHistoryView(View):
+    def get(self,request):
+        book_history = BookHistoryRenting.objects.filter(borrower=request.user)
+        return render(request, 'dashboard/book_history.html', {'book_history': book_history})

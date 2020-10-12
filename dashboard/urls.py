@@ -1,7 +1,7 @@
 from django.urls import path
 
 from dashboard.views import DashboardView, BookOnReservationView, BookOnLoanView, BookRentView, BookReturnView, \
-    HistoryView
+    HistoryView, BookCreateView, AuthorCreateView, CategoryCreateView, BookInstanceCreateView
 
 urlpatterns = [
     path('', DashboardView.as_view(),name='dashboard'),
@@ -10,5 +10,10 @@ urlpatterns = [
     path('loan/<uuid:id>/', BookRentView.as_view(),name='book_rent'),
     path('return/<uuid:id>/', BookReturnView.as_view(),name='book_return'),
     path('book_history/<str:book_instance>/', HistoryView.as_view(),name='book_history'),
+    path('add_book/', BookCreateView.as_view(),name='add_book'),
+    path('add_author/', AuthorCreateView.as_view(),name='add_author'),
+    path('add_category/', CategoryCreateView.as_view(),name='add_category'),
+    path('add_book_instance/', BookInstanceCreateView.as_view(),name='add_book_instance'),
+
 
 ]

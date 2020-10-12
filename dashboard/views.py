@@ -1,11 +1,14 @@
 from datetime import date, timedelta
 
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.views.generic import CreateView
 
 from django.views.generic.base import View
 
 from catalog.models import Book, BookInstance, Autor, BookHistoryRenting
+from dashboard.templates.dashboard.forms import BookForm, AuthorForm, CategoryForm, BookInstanceForm
 
 
 class DashboardView(View):
@@ -86,7 +89,7 @@ class BookReturnView(View):
             i.save()
             book_history = BookHistoryRenting()
             book_history.book_instance = i.id
-            book_history.borrower = None
+            book_history.borrower = i.borrower
             book_history.status = 'a'
             book_history.time_stamp = today_date
             book_history.save()
@@ -97,6 +100,36 @@ class HistoryView(View):
         books = BookInstance.objects.filter(id=book_instance)
         book_history = BookHistoryRenting.objects.filter(book_instance=book_instance)
         return render(request, 'dashboard/book_history.html', {'book_history': book_history,'books':books})
+
+class BookCreateView(PermissionRequiredMixin, CreateView):
+    form_class = BookForm
+    template_name = 'dashboard/form.html'
+    success_url = '/dashboard/'
+    permission_required = 'book.add_book'
+
+class AuthorCreateView(PermissionRequiredMixin, CreateView):
+    form_class = AuthorForm
+    template_name = 'dashboard/form.html'
+    success_url = '/dashboard/'
+    permission_required = 'autor.add_autor'
+
+class CategoryCreateView(PermissionRequiredMixin, CreateView):
+    form_class = CategoryForm
+    template_name = 'dashboard/form.html'
+    success_url = '/dashboard/'
+    permission_required = 'category.add_category'
+
+class CategoryCreateView(PermissionRequiredMixin, CreateView):
+    form_class = CategoryForm
+    template_name = 'dashboard/form.html'
+    success_url = '/dashboard/'
+    permission_required = 'category.add_category'
+
+class BookInstanceCreateView(CreateView):
+    form_class = BookInstanceForm
+    template_name = 'dashboard/form.html'
+    success_url = '/dashboard/'
+
 
 
 
