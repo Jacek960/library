@@ -1,13 +1,20 @@
 {% extends 'base.html' %}
+{% block title %}Forms Library4U {% endblock %}
+{% load crispy_forms_tags %}
 {% block content %}
+    <style>
+        .textinput, .selectmultiple, .textarea, .select {
+            width: 450px;
+        }
+    </style>
 
     <div class="container">
 
-<form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Ad">
-</form>
-</div>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button class="btn btn-success" type="submit">Add</button>
+        </form>
+    </div>
 
 {% endblock %}

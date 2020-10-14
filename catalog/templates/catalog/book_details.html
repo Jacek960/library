@@ -1,33 +1,40 @@
 {% extends 'base.html' %}
-
+{% block title %} {{ book.title }}- Library4U {% endblock %}
 {% block content %}
+    <div class="row">
+        <div class="col-sm-4">
+            <img style="width: 157px;height:250px;display: block;margin: 0 auto;padding-top: 15px;"
+                 src="{{ book.cover.url }}"/>
+        </div>
+        <div class="col-sm-8">
+            <h1>Title: {{ book.title }}</h1>
+            <p><strong>Author:</strong> <a href="{% url 'author' book.autor.slug %}">{{ book.autor }}</a></p>
+            <p><strong>Summary:</strong> {{ book.description }}</p>
+            <p><strong>Genre:</strong> {{ book.category.all|join:", " }}</p>
+        </div>
+    </div>
 
-<h1>Title: {{ book.title }}</h1>
+    <div style="margin-left:20px;margin-top:20px">
+        <h4>Copies</h4> <h6>Available: {{ num_instances_available }} from {{ books_instance_all }}</h6>
 
-<img src="{{ book.cover.url  }}"/>
-
-  <p><strong>Author:</strong> <a href="{% url 'author' book.autor.slug %}">{{ book.autor }}</a></p> <!-- author detail link not yet defined -->
-  <p><strong>Summary:</strong> {{ book.description }}</p>
-  <p><strong>Genre:</strong> {{ book.category.all|join:", " }}</p>
-
-  <div style="margin-left:20px;margin-top:20px">
-      <h4>Copies</h4> <h6>Available: {{ num_instances_available }} from {{ books_instance_all }}</h6>
-
-    {% for copy in book.bookinstance_set.all %}
-      <hr>
-      <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">
-        {{ copy.get_status_display }}
-      </p>
-        {% if copy.status == 'a' %}
-        <p><a href="{% url 'book_reservation' copy.id %}"><strong>Reserve a book:</strong></a>
-      {% endif %}
-      {% if copy.status != 'a' %}
-        <p><strong>Due to be returned:</strong> {{ copy.due_back }}</p>
-      {% endif %}
-        <p>Borrower: {{ copy.borrower  }}</p>
-      <p><strong>Imprint:</strong> {{ copy.imprint }}</p>
-      <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
-    {% endfor %}
-  </div>
+        {% for copy in book.bookinstance_set.all %}
+            <hr>
+            <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">
+                {{ copy.get_status_display }}
+            </p>
+            {% if copy.status == 'o' %}
+                <p><strong>Due to be returned:</strong> {{ copy.due_back }}</p>
+            {% endif %}
+            <p><strong>Library no:</strong> {{ copy.imprint }}</p>
+            {% if request.user.is_staff %}
+                <p>Borrower: {{ copy.borrower }}</p>
+                <a class="text-muted"><strong>Id:</strong> href="{% url 'book_history' copy.id %}" >{{ copy.id }}</a>
+                <p></p>
+            {% endif %}
+            {% if copy.status == 'a' %}
+                <a class="btn btn-success" href="{% url 'book_reservation' copy.id %}"><strong>Reserve a book:</strong></a>
+            {% endif %}
+        {% endfor %}
+    </div>
 
 {% endblock content %}

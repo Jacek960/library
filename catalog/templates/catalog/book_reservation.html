@@ -1,6 +1,5 @@
-
 {% extends 'base.html' %}
-
+{% block title %} Book reservation- Library4U {% endblock %}
 {% block content %}
     <style>
         .textinput {
@@ -8,10 +7,12 @@
         }
     </style>
     <h4>Book reservation </h4>
-    {% for book in book_instance_reservation %}
-        {{ book.book }}
-        {{ book.id }}
-{% endfor %}
+    <ul>
+        {% for book in book_instance_reservation %}
+            <li>Title: {{ book.book }}</li>
+            <li>Library book no: {{ book.imprint }}</li>
+            </ul>
+        {% endfor %}
 
     <form method="post">
         {% csrf_token %}

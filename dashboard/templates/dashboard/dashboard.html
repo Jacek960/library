@@ -1,38 +1,101 @@
 {% extends 'base.html' %}
-
+{% block title %}Dashboard- Library4U {% endblock %}
 {% block content %}
-<h3>dashboard </h3>
-      <ul>
-    <li><strong>Books:</strong> {{ num_books }}</li>
-    <li><strong>Copies:</strong> {{ num_instances }}</li>
-    <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
-    <li><strong>Authors:</strong> {{ num_autors }}</li>
-  </ul>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    <h3>dashboard </h3>
+    <ul>
+        <li><strong>Books:</strong> {{ num_books }}</li>
+        <li><strong>Copies:</strong> {{ num_instances }}</li>
+        <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
+        <li><strong>Authors:</strong> {{ num_autors }}</li>
+    </ul>
 
     <h3>Users</h3>
-    <ul>
-    {% for user in active_users %}
-        <li>{{ user }} {{ user.last_login }}</li>
-    {% endfor %}
-    </ul>
 
-        <h3>Book reservations <small><a href="{% url 'book_on_reservtion' %}">All</a></small></h3>
-    <ul>
-    {% for book in instances_reserved %}
-        <li>{{ book.book }} - {{ book.borrower }} id {{ book.borrower_id }} book id :{{ book.id}} {{ book.reservation_time }}</li>
-    {% endfor %}
-    </ul>
+    <table>
+        <tr>
+            <th>User name</th>
+            <th>Last login</th>
+        </tr>
 
-            <h3>Book on loan <small><a href="{% url 'book_on_loan' %}">All</a></small></h3>
-    <ul>
-    {% for book in instances_on_loan %}
-        <li>id {{ book.borrower_id }} - {{ book.borrower }} - {{ book.book }}   book id :{{ book.id}} due back date: {{ book.due_back }}
-                    {% if book.due_back >= today_date %}
-                due back: <span style="color: green">{{ book.due_back|timeuntil:today_date }}</span>
-            {% else %}
-                over due: <span style="color: red">{{ today_date|timeuntil:book.due_back }}</span>
-            {% endif %}
-        </li>
-    {% endfor %}
-    </ul>
+        {% for user in active_users %}
+            <tr>
+                <td>{{ user }}</td>
+                <td>{{ user.last_login }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+
+    <h3>Book reservations <small><a href="{% url 'book_on_reservtion' %}">All</a></small></h3>
+    <table>
+        <tr>
+            <th>Book name</th>
+            <th>User</th>
+            <th>User ID</th>
+            <th>Reservation time</th>
+            <th>Book number</th>
+            <th>Action</th>
+        </tr>
+
+        {% for book in instances_reserved %}
+            <tr>
+                <td>{{ book.book }} </td>
+                <td>{{ book.borrower }}</td>
+                <td>{{ book.borrower_id }}</td>
+                <td>{{ book.reservation_time }}</td>
+                <td>{{ book.imprint }}</td>
+                <td><a class="btn btn-success" href="{% url 'book_rent' book.id %}">rent</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+
+    <h3>Book on loan <small><a href="{% url 'book_on_loan' %}">All</a></small></h3>
+    <table>
+        <tr>
+            <th>Book name</th>
+            <th>User</th>
+            <th>User ID</th>
+            <th>Book number</th>
+            <th>Book due back</th>
+            <th>Time to return</th>
+            <th>Action</th>
+        </tr>
+        {% for book in instances_on_loan %}
+            <tr>
+                <td>{{ book.book }} </td>
+                <td>{{ book.borrower }}</td>
+                <td>{{ book.borrower_id }}</td>
+                <td>{{ book.imprint }}</td>
+                <td>{{ book.due_back }}</td>
+
+                {% if book.due_back >= today_date %}
+                    <td>
+                        due back: <span style="color: green">{{ book.due_back|timeuntil:today_date }}</span>
+                        {% else %}
+                        over due: <span style="color: red">{{ today_date|timeuntil:book.due_back }}</span>
+                    </td>
+                {% endif %}
+                <td><a class="btn btn-success" href="{% url 'book_return' book.id %}">return</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
 {% endblock content %}

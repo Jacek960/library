@@ -1,6 +1,5 @@
-
 {% extends 'base.html' %}
-
+{% block title %}Book rent- Library4U {% endblock %}
 {% block content %}
     <style>
         .textinput {
@@ -8,12 +7,14 @@
         }
     </style>
     <h4>Book rent + 14 days </h4>
-    {% for book in book_instance_rent %}
-        {{ book.book }}
-        {{ book.id }}
-        {{ book.borrower }}
-        {{ book.reservation_time }}
-{% endfor %}
+    <ul>
+        {% for book in book_instance_rent %}
+            <li>Title: {{ book.book }}</li>
+            <li>Id: {{ book.id }}</li>
+            <li>User: {{ book.borrower }}</li>
+            <li>Reservation Time: {{ book.reservation_time }}</li>
+            </ul>
+        {% endfor %}
 
     <form method="post">
         {% csrf_token %}

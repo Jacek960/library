@@ -19,6 +19,7 @@ class Autor(models.Model):
     def __str__(self):
         return self.name
 
+
 class Category(models.Model):
     name = models.CharField(max_length=250)
     slug = models.SlugField(blank=True, null=True)
@@ -41,19 +42,21 @@ class Book(models.Model):
     cover = models.ImageField(upload_to='ad_image/', blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if not self.slug  and self.title and self.autor:
+        if not self.slug and self.title and self.autor:
             self.slug = slugify(f"{self.title.lower().replace('ł', 'l')}-{self.autor.slug}")
         super(Book, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
 
+
 class BookInstance(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this particular book across whole library')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
+                          help_text='Unique ID for this particular book across whole library')
     book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True)
     imprint = models.CharField(max_length=200)
     due_back = models.DateField(null=True, blank=True)
-    borrower = models.ForeignKey(User, on_delete=models.SET_NULL,null=True,blank=True)
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     reservation_time = models.DateField(null=True, blank=True)
 
     LOAN_STATUS = (
@@ -80,7 +83,7 @@ class BookInstance(models.Model):
 
 
 class BookHistoryRenting(models.Model):
-    book_instance = models.CharField(max_length=36,null=True, blank=True)
+    book_instance = models.CharField(max_length=36, null=True, blank=True)
     borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     time_stamp = models.DateField(null=True, blank=True)
 
@@ -89,7 +92,7 @@ class BookHistoryRenting(models.Model):
         ('a', 'Available'),
         ('r', 'Reserved'),
     )
-    status = models.CharField(max_length=1,choices=LOAN_STATUS,blank=True)
+    status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True)
 
     def __str__(self):
         """String for representing the Model object."""

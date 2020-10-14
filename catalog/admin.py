@@ -8,5 +8,3 @@ admin.site.register(Autor)
 admin.site.register(Category)
 admin.site.register(BookInstance)
 admin.site.register(BookHistoryRenting)
-
-

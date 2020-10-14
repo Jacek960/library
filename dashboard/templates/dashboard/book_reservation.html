@@ -1,15 +1,49 @@
 {% extends 'base.html' %}
-
+{% block title %}Book reservation- Library4U {% endblock %}
 {% block content %}
 
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-{% for book in book_reserved %}
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
 
-    <li>{{ book.book }} - {{ book.borrower }} id {{ book.borrower_id }} book id :{{ book.id}} {{ book.reservation_time }}</li>
-<p>Rent <small><a href="{% url 'book_rent' book.id %}">rent</a></small></p>
-{% endfor %}
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
 
+
+
+
+    <h3>Book reservations</h3>
+    <table>
+        <tr>
+            <th>Book name</th>
+            <th>User</th>
+            <th>User ID</th>
+            <th>Reservation time</th>
+            <th>Book number</th>
+            <th>Action</th>
+        </tr>
+        {% for book in book_reserved %}
+            <tr>
+                <td>{{ book.book }} </td>
+                <td>{{ book.borrower }}</td>
+                <td>{{ book.borrower_id }}</td>
+                <td>{{ book.reservation_time }}</td>
+                <td>{{ book.imprint }}</td>
+                <td><a class="btn btn-success" href="{% url 'book_rent' book.id %}">rent</a></td>
+
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
 {% endblock content %}
-
-
-book_rent

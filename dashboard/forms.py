@@ -1,6 +1,6 @@
 from django import forms
 
-from catalog.models import Book, Autor, BookInstance
+from catalog.models import Book, Autor, BookInstance, Category
 
 
 class BookForm(forms.ModelForm):
@@ -16,13 +16,13 @@ class AuthorForm(forms.ModelForm):
 
 class CategoryForm(forms.ModelForm):
     class Meta:
-        model=Autor
+        model=Category
         fields = ['name',]
 
 class BookInstanceForm(forms.ModelForm):
     class Meta:
         model=BookInstance
-        fields = ['id','book','imprint','borrower','due_back','reservation_time','status']
+        fields = ['book','imprint','borrower','status']
 
 
 

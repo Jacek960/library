@@ -1,33 +1,41 @@
 {% extends 'base.html' %}
-
+{% block title %} My books- Library4U {% endblock %}
 {% block content %}
 
 
-    {% for book in book_instance_borrower %}
-        <h3>Title: {{ book.book }}</h3>
-        <img src="{{ book.book.cover.url }}" class="card-img-top" alt="..."
+    <div class="row">
+        {% for book in book_instance_borrower %}
+            <div class="col-sm-4">
+                <img style="width: 157px;height:250px;display: block;margin: 0 auto;padding-top: 15px;"
+                     src="{{ book.book.cover.url }}"/>
+            </div>
+            <div class="col-sm-8">
+                <h1>Title: {{ book.book.title }}</h1>
+                <p><strong>Author:</strong> {{ book.book.autor }}</p>
+                <p><strong>Summary:</strong> {{ book.book.description }}</p>
+                <p><strong>Genre:</strong> {{ book.book.category.all|join:", " }}</p>
+                {% if book.status == "o" %}
+                    <p><strong>Status:</strong> on loan</p>
+                    <p><strong>Due back:</strong> {{ book.due_back }}</p>
+                    {% if book.due_back >= today_date %}
+                        <strong>due back: </strong>
+                        <span style="color: green">{{ book.due_back|timeuntil:today_date }}</span>
+                    {% else %}
+                        <strong>over due: </strong>
+                        <span style="color: red">{{ today_date|timeuntil:book.due_back }}</span>
+                    {% endif %}
+                {% elif book.status == "r" %}
+                    <p><strong>Status: </strong>reservation </p>
+                {% endif %}
 
-             style="width: 157px;height:250px;display: block;margin: 0 auto;padding-top: 15px;">
-        {% if book.status == "o" %}
-            <p>Status: on loan</p>
-            <p>Due back: {{ book.due_back }}</p>
-            {% if book.due_back >= today_date %}
-                due back: <span style="color: green">{{ book.due_back|timeuntil:today_date }}</span>
-            {% else %}
-                over due: <span style="color: red">{{ today_date|timeuntil:book.due_back }}</span>
-            {% endif %}
-        {% elif book.status == "r" %}
-            <p>Status: reservation </p>
-        {% endif %}
+            </div>
+            <div style="border-bottom: solid 1px black;width: 100%">
 
-    {% endfor %}
+            </div>
+
+        {% endfor %}
+
+    </div>
 
 {% endblock %}
 
-{#            {% if book.book_expiration_date >= today_date %}#}
-{#                <span style="color: green">{{ book.book_expiration_date|timeuntil:today_date }}</span>#}
-{#            {% elif book.book_expiration_date == None %}#}
-{#                <span style="color: red"><strong>Brak książeczki</strong> </span>#}
-{#            {% else %}#}
-{#                <span style="color: red">{{ today_date|timeuntil:book.book_expiration_date }}#}
-{#            {% endif %}#}

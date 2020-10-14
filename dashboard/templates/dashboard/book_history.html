@@ -1,16 +1,64 @@
 {% extends 'base.html' %}
+{% block title %}Book history- Library4U {% endblock %}
 {% block content %}
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-{% for hbook in books %}
-{{ hbook.book.title }}
-   <img src="{{ hbook.book.cover.url }}" >
-{% endfor %}
-<br>
-{% for book in book_history  %}
-<li>{{ book.borrower }}
-    {{ book.book_instance }}
-    {{ book.time_stamp }}
-    {{ book.status }}</li>
-{% endfor %}
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    {% for hbook in books %}
+
+
+        <div class="row">
+            <div class="col-sm-4">
+                <img style="width: 157px;height:250px;display: block;margin: 0 auto;padding-top: 15px;"
+                     src="{{ hbook.book.cover.url }}""/>
+            </div>
+            <div class="col-sm-8">
+                <h1>Title: {{ hbook.book.title }}</h1>
+                <p><strong>Author:</strong> {{ hbook.book.autor }}</p>
+                <p><strong>Summary:</strong> {{ hbook.book.description }}</p>
+                <p><strong>Genre:</strong> {{ hbook.book.category.all|join:", " }}</p>
+
+            </div>
+        </div>
+    {% endfor %}
+    <br>
+    <table>
+        <tr>
+            <th>User</th>
+            <th>Time</th>
+            <th>Book number</th>
+            <th>Status</th>
+        </tr>
+
+        {% for book in book_history %}
+            <tr>
+                <td>{{ book.borrower }}</td>
+                <td>{{ book.time_stamp }}</td>
+                <td>{{ book.book_instance }}</td>
+                {% if book.status == 'r' %}
+                    <td>Reservations</td>
+                {% elif book.status == 'o' %}
+                    <td>On loan</td>
+                {% elif book.status == 'a' %}
+                    <td>Available - book returned</td>
+
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
 
 {% endblock %}

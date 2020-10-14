@@ -1,6 +1,5 @@
-
 {% extends 'base.html' %}
-
+{% block title %}Book return- Library4U {% endblock %}
 {% block content %}
     <style>
         .textinput {
@@ -8,13 +7,21 @@
         }
     </style>
     <h4>Book return </h4>
-    {% for book in book_instance_rent %}
-        {{ book.book }}
-        {{ book.id }}
-        {{ book.borrower }}
-        {{ book.reservation_time }}
-{% endfor %}
-
+    <ul>
+        {% for book in book_instance_rent %}
+            <li>Title: {{ book.book }}</li>
+            <li>Id: {{ book.id }}</li>
+            <li>User: {{ book.borrower }}</li>
+            <li>Time: {{ book.due_back }}</li>
+            <li>{% if book.due_back >= today_date %}
+                <td>
+                    due back: <span style="color: green">{{ book.due_back|timeuntil:today_date }}</span>
+                    {% else %}
+                    over due: <span style="color: red">{{ today_date|timeuntil:book.due_back }}</span>
+                </td>
+            {% endif %}</li>
+        {% endfor %}
+    </ul>
     <form method="post">
         {% csrf_token %}
         <br>

@@ -8,11 +8,11 @@ from django.views.generic import CreateView
 from django.views.generic.base import View
 
 from catalog.models import Book, BookInstance, Autor, BookHistoryRenting
-from dashboard.templates.dashboard.forms import BookForm, AuthorForm, CategoryForm, BookInstanceForm
+from dashboard.forms import BookForm, AuthorForm, CategoryForm, BookInstanceForm
 
 
 class DashboardView(View):
-    def get(self,request):
+    def get(self, request):
         if request.user.is_staff:
             num_books = Book.objects.all().count()
             num_instances = BookInstance.objects.all().count()
@@ -22,44 +22,50 @@ class DashboardView(View):
             instances_reserved = BookInstance.objects.filter(status__exact='r')[0:11]
             instances_on_loan = BookInstance.objects.filter(status__exact='o').order_by('due_back')[0:11]
             today_date = date.today()
-            return render(request,'dashboard/dashboard.html',{
-                'num_books':num_books,
-                'num_instances':num_instances,
-                'num_instances_available':num_instances_available,
-                'num_autors':num_autors,
-                'active_users':active_users,
-                'instances_reserved':instances_reserved,
-                'instances_on_loan':instances_on_loan,
-                'today_date':today_date,
-            } )
+            return render(request, 'dashboard/dashboard.html', {
+                'num_books': num_books,
+                'num_instances': num_instances,
+                'num_instances_available': num_instances_available,
+                'num_autors': num_autors,
+                'active_users': active_users,
+                'instances_reserved': instances_reserved,
+                'instances_on_loan': instances_on_loan,
+                'today_date': today_date,
+            })
         else:
             return redirect('/')
 
+
 class BookOnReservationView(View):
-    def get(self,request):
+    def get(self, request):
         if request.user.is_staff:
             book_reserved = BookInstance.objects.filter(status__exact='r')
-            return render(request,'dashboard/book_reservation.html',{'book_reserved':book_reserved})
+            return render(request, 'dashboard/book_reservation.html', {'book_reserved': book_reserved})
         else:
             return redirect('/')
 
 
 class BookOnLoanView(View):
-    def get(self,request):
+    def get(self, request):
         if request.user.is_staff:
             book_on_loan = BookInstance.objects.filter(status__exact='o')
             today_date = date.today()
-            return render(request,'dashboard/book_on_loan.html',{'book_on_loan':book_on_loan,
-                                                                 'today_date':today_date,
-                                                                 })
+            return render(request, 'dashboard/book_on_loan.html', {'book_on_loan': book_on_loan,
+                                                                   'today_date': today_date,
+                                                                   })
         else:
             return redirect('/')
 
+
 class BookRentView(View):
-    def get(self,request,id):
-        book_instance_rent = BookInstance.objects.filter(id=id)
-        return render(request, 'dashboard/book_rent.html', {'book_instance_rent':book_instance_rent})
-    def post(self,request,id):
+    def get(self, request, id):
+        if request.user.is_staff:
+            book_instance_rent = BookInstance.objects.filter(id=id)
+            return render(request, 'dashboard/book_rent.html', {'book_instance_rent': book_instance_rent})
+        else:
+            return redirect('/')
+
+    def post(self, request, id):
         update_book = BookInstance.objects.filter(id=id)
         today_date = date.today()
         for i in update_book:
@@ -75,11 +81,18 @@ class BookRentView(View):
             book_history.save()
         return redirect('/dashboard/')
 
+
 class BookReturnView(View):
-    def get(self,request,id):
-        book_instance_rent = BookInstance.objects.filter(id=id)
-        return render(request, 'dashboard/book_return.html', {'book_instance_rent':book_instance_rent})
-    def post(self,request,id):
+    def get(self, request, id):
+        if request.user.is_staff:
+            book_instance_rent = BookInstance.objects.filter(id=id)
+            today_date = date.today()
+            return render(request, 'dashboard/book_return.html',
+                          {'book_instance_rent': book_instance_rent, 'today_date': today_date})
+        else:
+            return redirect('/')
+
+    def post(self, request, id):
         update_book = BookInstance.objects.filter(id=id)
         today_date = date.today()
         for i in update_book:
@@ -95,11 +108,13 @@ class BookReturnView(View):
             book_history.save()
         return redirect('/dashboard/')
 
+
 class HistoryView(View):
-    def get(self,request,book_instance):
+    def get(self, request, book_instance):
         books = BookInstance.objects.filter(id=book_instance)
         book_history = BookHistoryRenting.objects.filter(book_instance=book_instance)
-        return render(request, 'dashboard/book_history.html', {'book_history': book_history,'books':books})
+        return render(request, 'dashboard/book_history.html', {'book_history': book_history, 'books': books})
+
 
 class BookCreateView(PermissionRequiredMixin, CreateView):
     form_class = BookForm
@@ -107,17 +122,13 @@ class BookCreateView(PermissionRequiredMixin, CreateView):
     success_url = '/dashboard/'
     permission_required = 'book.add_book'
 
+
 class AuthorCreateView(PermissionRequiredMixin, CreateView):
     form_class = AuthorForm
     template_name = 'dashboard/form.html'
     success_url = '/dashboard/'
     permission_required = 'autor.add_autor'
 
-class CategoryCreateView(PermissionRequiredMixin, CreateView):
-    form_class = CategoryForm
-    template_name = 'dashboard/form.html'
-    success_url = '/dashboard/'
-    permission_required = 'category.add_category'
 
 class CategoryCreateView(PermissionRequiredMixin, CreateView):
     form_class = CategoryForm
@@ -125,11 +136,16 @@ class CategoryCreateView(PermissionRequiredMixin, CreateView):
     success_url = '/dashboard/'
     permission_required = 'category.add_category'
 
-class BookInstanceCreateView(CreateView):
+
+class CategoryCreateView(PermissionRequiredMixin, CreateView):
+    form_class = CategoryForm
+    template_name = 'dashboard/form.html'
+    success_url = '/dashboard/'
+    permission_required = 'category.add_category'
+
+
+class BookInstanceCreateView(PermissionRequiredMixin, CreateView):
     form_class = BookInstanceForm
     template_name = 'dashboard/form.html'
     success_url = '/dashboard/'
-
-
-
-
+    permission_required = 'bookinstance.add_bookinstance'
