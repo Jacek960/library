@@ -7,4 +7,48 @@
             {% include "catalog/book_card.html" %}
         {% endfor %}
     </div>
+
+
+
+
+<div style="width: 250px;margin-left: auto;margin-right: auto">
+    <br>
+    <nav aria-label="Page navigation example">
+        {% if all_books.has_other_pages %}
+            <ul class="pagination">
+                {% if all_books.has_previous %}
+                    <a class="page-link" href="?page={{ all_books.previous_page_number }}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+
+                {% else %}
+                    <li class="disabled"></li>
+
+                {% endif %}
+
+                {% for page in all_books.paginator.page_range %}
+
+                    {% if all_books == page %}
+                        <li class="page-item"><a class="page-link" href="#">{{ page }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if all_books.has_next %}
+
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ all_books.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="disabled"></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </nav>
+</div>
 {% endblock content %}

@@ -28,7 +28,7 @@
             <p><strong>Library no:</strong> {{ copy.imprint }}</p>
             {% if request.user.is_staff %}
                 <p>Borrower: {{ copy.borrower }}</p>
-                <a class="text-muted"><strong>Id:</strong> href="{% url 'book_history' copy.id %}" >{{ copy.id }}</a>
+                <strong>Id:</strong> <a href="{% url 'book_history' copy.id %}" >{{ copy.id }}</a>
                 <p></p>
             {% endif %}
             {% if copy.status == 'a' %}

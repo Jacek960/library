@@ -29,7 +29,10 @@ class HomePageView(View):
 
 class BookListView(View):
     def get(self, request):
-        all_books = Book.objects.all()
+        all_books = Book.objects.all().order_by('title')
+        paginator = Paginator(all_books, 10)
+        page = request.GET.get('page')
+        all_books = paginator.get_page(page)
         return render(request, 'catalog/book_list.html', {'all_books': all_books})
 
 
