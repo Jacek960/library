@@ -19,10 +19,12 @@ class HomePageView(View):
         num_instances = BookInstance.objects.all().count()
         num_instances_available = BookInstance.objects.filter(status__exact='a').count()
         num_autors = Autor.objects.count()
+        last_book = Book.objects.last()
         return render(request, 'catalog/home.html', {'num_books': num_books,
                                                      'num_instances': num_instances,
                                                      'num_instances_available': num_instances_available,
-                                                     'num_autors': num_autors
+                                                     'num_autors': num_autors,
+                                                     'last_book':last_book,
                                                      }
                       )
 
@@ -30,7 +32,7 @@ class HomePageView(View):
 class BookListView(View):
     def get(self, request):
         all_books = Book.objects.all().order_by('title')
-        paginator = Paginator(all_books, 10)
+        paginator = Paginator(all_books, 5)
         page = request.GET.get('page')
         all_books = paginator.get_page(page)
         return render(request, 'catalog/book_list.html', {'all_books': all_books})

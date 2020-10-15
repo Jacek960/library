@@ -2,13 +2,33 @@
 {% block title %} Home page - Library4U {% endblock %}
 {% block content %}
 
-    <h1>Welcome to Library4U</h1>
-    <p>The library has the following record counts:</p>
-    <ul>
-        <li><strong>Books:</strong> {{ num_books }}</li>
-        <li><strong>Copies:</strong> {{ num_instances }}</li>
-        <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
-        <li><strong>Authors:</strong> {{ num_autors }}</li>
-    </ul>
+
+
+    <div class="row">
+        <div class="col-sm-8">
+            <h1>Welcome to Library4U</h1>
+            <p>The library has the following record counts:</p>
+            <p></p>
+            <p></p>
+            <ul>
+
+                <li><strong>Books:</strong> {{ num_books }}</li>
+                <li><strong>Copies:</strong> {{ num_instances }}</li>
+                <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
+                <li><strong>Authors:</strong> {{ num_autors }}</li>
+            </ul>
+
+        </div>
+        <div class="col-sm-4">
+            <h4>Letest book:</h4>
+            <h5><a href="{% url 'book_details' last_book.id %} ">{{ last_book }}</a></h5>
+            <a href="{% url 'book_details' last_book.id %} ">
+                <img src="{{ last_book.cover.url }}" class="card-img-top" alt="..."
+
+                     style="width: 157px;height:250px"></a>
+            <br>
+
+        </div>
+    </div>
 
 {% endblock content %}
