@@ -20,7 +20,7 @@
 
         </div>
         <div class="col-sm-4">
-            <h4>Letest book:</h4>
+            <h4>Latest book:</h4>
             <h5><a href="{% url 'book_details' last_book.id %} ">{{ last_book }}</a></h5>
             <a href="{% url 'book_details' last_book.id %} ">
                 <img src="{{ last_book.cover.url }}" class="card-img-top" alt="..."

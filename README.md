@@ -16,7 +16,7 @@ Project - for local library. User can reserve a book from home. Librarian with d
 
 ## Screenshots
 Home Page
-![Home page](./img/homepage.jpg)
+![Home page](./img/home_page.jpg)
 Dashbord
 ![Dashbord page](./img/dashboard.jpg)
 Book Page
